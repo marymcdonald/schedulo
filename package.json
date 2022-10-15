@@ -2,7 +2,7 @@
   "name": "schedulo",
   "version": "1.0.0",
   "description": "A simple work scheduler for small businesses",
-  "main": "index.js",
+  "main": "schedulo_app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/marymcdonald/schedulo/issues"
   },
-  "homepage": "https://github.com/marymcdonald/schedulo#readme"
+  "homepage": "https://github.com/marymcdonald/schedulo#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
