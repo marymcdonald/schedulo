@@ -1,0 +1,20 @@
+extends schedulo-main 
+
+block main 
+  h2 Employee Roster
+  table 
+    thead 
+      tr 
+        th Id 
+        th Name 
+        th No scheduling 
+    tbody 
+      each employee in employees
+        tr 
+          td= employee.id
+          td= employee.name 
+          td= employee.noScheduling ? 'None' : employee.noScheduling
+    tfoot 
+      tr 
+        td(colspan="3")
+          a(href=`/employees/new`) Add new employee

@@ -1,13 +1,18 @@
 doctype html 
 
-html
+html(lang="en-CA")
+
   head 
     title Welcome to Schedulo! 
     meta(charset="UTF-8")
+    link(rel="stylesheet" href="/stylesheets/application.css")
+
   body 
     header 
-      h1 Who's on the schedule today: 
+      h1 Welcome to Schedulo!
+      block headerLinks 
+
     main 
-      p No notes today.
+      block main
 
 // <a target="_blank" href="https://icons8.com/icon/43117/add">Add</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
