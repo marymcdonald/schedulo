@@ -1,20 +1,34 @@
 extends schedulo-main 
 
 block main 
-  h2 Employee Roster
-  table 
-    thead 
-      tr 
-        th Id 
-        th Name 
-        th No scheduling 
-    tbody 
-      each employee in employees
+  section#employees
+    header
+      h2 Employee Roster
+      ul 
+        li
+          form(action=`/employees/edit` method="get")
+            button.edit(type="submit") Edit List
+
+      ul 
+        each employee in employees 
+          li 
+            h3= `${employee.id} ${employee.name}`
+            form.delete(action=`/employees/${employee.id}/delete`
+                      method="post")
+              button Delete
+    table 
+      thead 
         tr 
-          td= employee.id
-          td= employee.name 
-          td= employee.noScheduling ? 'None' : employee.noScheduling
-    tfoot 
-      tr 
-        td(colspan="3")
-          a(href=`/employees/new`) Add new employee
+          th Id 
+          th Name 
+          th No scheduling 
+      tbody 
+        each employee in employees
+          tr 
+            td= employee.id
+            td= employee.name 
+            td= employee.noScheduling ? 'None' : employee.noScheduling
+      tfoot 
+        tr 
+          td(colspan="3")
+            a(href=`/employees/new`) Add new employee

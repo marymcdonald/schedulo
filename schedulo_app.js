@@ -10,6 +10,7 @@ app.set("views", "./views");
 app.set("view engine", "pug");
 
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
 app.use(morgan("common"));
 
 app.get("/", (req, res) => {
@@ -26,6 +27,13 @@ app.get("/employees", (req, res) => {
   });
 });
 
+//Error handler
+app.use((err, req, res, _next) => {
+  console.log(err);
+  res.status(404).send(err.message);
+});
+
+//Listener
 app.listen(3000, "localhost", () => {
   console.log("Listening to post 3000");
 });

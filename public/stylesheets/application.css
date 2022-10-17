@@ -12,7 +12,7 @@ body > header {
 
 body > header h1 {
   /* color: #dd5f4f; */
-  display: inline-block;
+  display: flex;
   font-size: 30px;
   width: 38%;
 }
@@ -45,6 +45,22 @@ a {
 table {
   display: inline-table;
   text-align: center;
+  background-color: #C8C8C8;
+  width: 500px;
+  padding: 50px;
+  margin: 1rem auto;
+}
+
+th,td {
+  padding: 7px 10px 10px 10px;
+}
+
+th {
+  text-transform: uppercase;
+}
+
+td {
+  border: 2px solid #000;
 }
 
 .flag {
@@ -65,4 +81,31 @@ ul {
 
 li {
   margin: 1rem;
+}
+
+#employees > ul li .delete {
+  background: transparent url("../images/delete.png") 0 3px no-repeat;
+  height: 27px;
+  margin: -12px 0 0;
+  opacity: 0.4;
+  right: 20px;
+  width: 24px;
+}
+
+#employees > ul li .delete:hover {
+  opacity: 1;
+}
+
+#employees header ul button::before {
+  content: "";
+  display: inline-block;
+  height: 24px;
+  margin: 0 7px 0 0;
+  vertical-align: -6px;
+  width: 24px;
+}
+
+#employees header ul button.delete::before {
+  background: transparent url("../images/delete.png") 0 0 no-repeat;
+  border: 2px solid transparent;
 }
