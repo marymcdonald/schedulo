@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const { body, validationResult } = require("express-validator");
 let {employees, weeks} = require("./lib/seed-data");
 const Schedulo = require("./lib/schedulo");
 const app = express();
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("common"));
 
 app.get("/", (req, res) => {
-  res.redirect("/home");
+  res.redirect("/schedule");
 });
 
 app.get("/home", (req, res) => {
@@ -26,6 +27,48 @@ app.get("/employees", (req, res) => {
     employees: schedule.getAllEmployees(),
   });
 });
+
+app.get("/employees/new", (req, res) => {
+  res.render("new-employee");
+});
+
+app.get("/schedule", (req, res) => {
+  let scheduled = schedule.getAllShifts();
+  res.render("schedule", {
+    currentWeek: scheduled[0],
+    nextWeek: scheduled[1]
+  })
+})
+
+app.post("/employees", 
+  [
+    body("name")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Name is required.")
+      .bail()
+      .isLength({ max: 25 })
+      .withMessage("Name is too long. Max length 25 characters.")
+      .isAlpha()
+      .withMessage("Name has invalid chars. Alphabetical characters only.")
+  ],
+  (req, res, next) => {
+    let errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      res.render("new-employee", {
+        errorMessages: errors.array().map(error => error.msg),
+        employeeName: req.body.name,
+      })
+    } else {
+      next();
+    }
+  },
+  (req, res, next) => {
+    schedule.addEmployeeToRoster(req.body.name);
+
+    res.redirect("/employees")
+  }
+);
 
 //Error handler
 app.use((err, req, res, _next) => {

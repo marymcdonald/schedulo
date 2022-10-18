@@ -1,0 +1,17 @@
+extends schedulo-main 
+
+block main 
+  form(action="/employees" method="post")
+    dl 
+      dt
+        label(for="employeeName") Enter the employee's name: 
+      dd  
+        input(type="text"
+              id="employeeName"
+              name="employeeName"
+              placeholder="Employee Name"
+              value=employeeName)
+
+    fieldset.actions 
+      input(type="submit" value="Add")
+      a(href="/employees") Cancel

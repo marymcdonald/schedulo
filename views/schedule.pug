@@ -1,0 +1,53 @@
+extends schedulo-main 
+
+block main 
+  section#schedule 
+    header
+      h2 Café Schedule
+
+    h3 Current Week
+    table 
+      thead
+        tr 
+          th
+          each day in currentWeek.days
+            th #{day.name}
+
+        tr 
+          th Morning
+          each day in currentWeek.days 
+            td #{day.shifts.Morning}
+          
+
+        tr 
+          th mid-Morning
+          each day in currentWeek.days 
+            td #{day.shifts.midMorning}
+
+        tr
+          th Afternoon
+          each day in currentWeek.days 
+            td #{day.shifts.midMorning}
+
+    h3 Next Week 
+    table 
+      thead
+        tr 
+          th
+          each day in nextWeek.days
+            th #{day.name}
+
+        tr 
+          th Morning 
+          each day in nextWeek.days 
+            td #{day.shifts.Morning}
+
+        tr 
+          th mid-Morning
+          each day in nextWeek.days 
+            td #{day.shifts.midMorning}
+
+        tr
+          th Afternoon
+          each day in nextWeek.days 
+            td #{day.shifts.Afternoon}
