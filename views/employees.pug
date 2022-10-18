@@ -4,31 +4,29 @@ block main
   section#employees
     header
       h2 Employee Roster
-      ul 
-        li
-          form(action=`/employees/edit` method="get")
-            button.edit(type="submit") Edit List
 
-      ul 
-        each employee in employees 
-          li 
-            h3= `${employee.id} ${employee.name}`
-            form.delete(action=`/employees/${employee.id}/delete`
-                      method="post")
-              button Delete
     table 
       thead 
         tr 
           th Id 
           th Name 
           th No scheduling 
+          th Edit 
+          th Delete
       tbody 
         each employee in employees
           tr 
             td= employee.id
             td= employee.name 
             td= employee.noScheduling ? 'None' : employee.noScheduling
+            td
+              form(action=`/employees/${employee.id}/edit` method="get")
+                button.edit(type="submit") Edit
+            td 
+              form.delete(action=`/employees/${employee.id}/delete`      
+                          method="post")
+                button(class="button-delete")
       tfoot 
         tr 
           td(colspan="3")
-            a(href=`/employees/new`) Add new employee
+            a(href=`/employees/new`) Add new employee        

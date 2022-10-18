@@ -45,10 +45,11 @@ a {
 table {
   display: inline-table;
   text-align: center;
-  background-color: #C8C8C8;
-  width: 500px;
+  background-color: #a2a8e0;
+  width: 90%;
   padding: 50px;
   margin: 1rem auto;
+  margin-left: 70px;
 }
 
 th,td {
@@ -83,7 +84,18 @@ li {
   margin: 1rem;
 }
 
-#employees > ul li .delete {
+#employees .button-delete {
+  background: transparent url("../images/delete.png") 0 3px no-repeat;
+  height: 75px;
+  /* margin: -12px 0 0; */
+  width: 70px;
+}
+
+/* #employees .button-delete:hover {
+  opacity: 2;
+} */
+
+/* #employees > tr td .delete {
   background: transparent url("../images/delete.png") 0 3px no-repeat;
   height: 27px;
   margin: -12px 0 0;
@@ -92,11 +104,11 @@ li {
   width: 24px;
 }
 
-#employees > ul li .delete:hover {
+#employees > tbody > td button.delete:hover {
   opacity: 1;
 }
 
-#employees header ul button::before {
+#employees table tbody td button::before {
   content: "";
   display: inline-block;
   height: 24px;
@@ -105,7 +117,7 @@ li {
   width: 24px;
 }
 
-#employees header ul button.delete::before {
+#employees table tbody td button.delete::before {
   background: transparent url("../images/delete.png") 0 0 no-repeat;
   border: 2px solid transparent;
-}
+} */
