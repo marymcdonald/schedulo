@@ -10,14 +10,17 @@ html(lang="en-CA")
   body 
     header 
       h1 Welcome to Schedulo!
-      if errorMessages && errorMessages.length > 0
-        ul.flash
-          each message in errorMessages
-            li.error= message
 
       block headerLinks 
 
     main 
+      -let messageTypes = Object.keys(flash || {});
+      if messageTypes.length > 0
+        ul 
+          each messageType in messageTypes 
+            each message in flash[messageType]
+              li.flash(class="messageType")= message 
+
       block main
 
 // <a target="_blank" href="https://icons8.com/icon/43117/add">Add</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>

@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const { body, validationResult } = require("express-validator");
-let {employees, weeks} = require("./lib/seed-data");
+//let {employees, weeks} = require("./lib/seed-data");
 const Schedulo = require("./lib/schedulo");
 const session = require("express-session");
 const store = require("connect-loki");
@@ -10,10 +10,7 @@ const flash = require("express-flash");
 const app = express();
 const LokiStore = store(session);
 
-const schedule = new Schedulo(employees, weeks);
-const clone = object => {
-  // return JSON.parse(JSON.stringify(object));
-};
+//const schedule = new Schedulo(employees, weeks);
 
 app.set("views", "./views");
 app.set("view engine", "pug");
@@ -29,7 +26,7 @@ app.use(session({
     path: "/",
     secure: false,
   },
-  name: "launch-school-contacts-manager-session-id",
+  name: "launch-school-schedulo-app-session-id",
   resave: false,
   saveUninitialized: true,
   secret: "this is not very secure",
@@ -39,14 +36,23 @@ app.use(session({
 app.use(flash());
 
 app.use((req, res, next) => {
-  if (!("schedule" in req.session)) {
-    req.session.schedule = clone(schedule);
+  if ("schedule" in req.session) {
+    let schedule = Schedulo.makeSchedule(req.session.schedule);
+    req.session.schedule = schedule;
+  } else {
+    req.session.schedule = new Schedulo();
   }
   next()
 });
 
+app.use((req, res, next) => {
+  res.locals.flash = req.session.flash;
+  delete req.session.flash;
+  next();
+})
+
 app.get("/", (req, res) => {
-  res.redirect("/schedule");
+  res.redirect("/home");
 });
 
 app.get("/home", (req, res) => {
@@ -54,8 +60,10 @@ app.get("/home", (req, res) => {
 })
 
 app.get("/employees", (req, res) => {
+  let schedule = req.session.schedule;
+
   res.render("employees", {
-    employees: req.session.schedule.getAllEmployees(),
+    employees: schedule.getAllEmployees(),
   });
 });
 
@@ -64,12 +72,13 @@ app.get("/employees/new", (req, res) => {
 });
 
 app.get("/schedule", (req, res) => {
-  console.log(typeof req.session.schedule);
-  let scheduled = req.session.schedule.getAllShifts();
+  let schedule = req.session.schedule;
+  let allShifts = schedule.getAllShifts();
+
   res.render("schedule", {
-    currentWeek: scheduled[0],
-    nextWeek: scheduled[1]
-  })
+    currentWeek: allShifts[0],
+    nextWeek: allShifts[1]
+  });
 })
 
 app.post("/employees", 
@@ -87,8 +96,10 @@ app.post("/employees",
   (req, res, next) => {
     let errors = validationResult(req);
     if(!errors.isEmpty()) {
+      errors.array().map(error => req.flash("error", error.msg));
+
       res.render("new-employee", {
-        errorMessages: errors.array().map(error => error.msg),
+        flash: req.flash(),
         employeeName: req.body.name,
       })
     } else {
@@ -96,8 +107,8 @@ app.post("/employees",
     }
   },
   (req, res) => {
-    req.session.schedule.addEmployeeToRoster(req.body.name);
-
+    req.session.schedule.addEmployee(req.body.name);
+    res.flash("success", "New employee added.");
     res.redirect("/employees")
   }
 );

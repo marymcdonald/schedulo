@@ -91,33 +91,30 @@ li {
   width: 70px;
 }
 
-/* #employees .button-delete:hover {
-  opacity: 2;
-} */
-
-/* #employees > tr td .delete {
-  background: transparent url("../images/delete.png") 0 3px no-repeat;
-  height: 27px;
-  margin: -12px 0 0;
-  opacity: 0.4;
-  right: 20px;
-  width: 24px;
+.flash {
+  font-size: 1.25rem;
+  font-weight: bold;
+  list-style-position: inside;
+  margin: 0 2rem;
+  max-width: 100%;
 }
 
-#employees > tbody > td button.delete:hover {
-  opacity: 1;
+.flash li {
+  margin: 0.5rem auto;
+  padding: 0.5rem 2rem;
 }
 
-#employees table tbody td button::before {
-  content: "";
-  display: inline-block;
-  height: 24px;
-  margin: 0 7px 0 0;
-  vertical-align: -6px;
-  width: 24px;
+.error {
+  background-color: #ffcfbf;
+  color: #ff6633;
 }
 
-#employees table tbody td button.delete::before {
-  background: transparent url("../images/delete.png") 0 0 no-repeat;
-  border: 2px solid transparent;
-} */
+.success {
+  background-color: #a0f0a0;
+  color: #33cc99;
+}
+
+.info {
+  background-color: #cbe5f2;
+  color: #3399cc;
+}
