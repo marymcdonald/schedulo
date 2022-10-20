@@ -4,6 +4,8 @@ block main
   section#schedule 
     header
       h2 Café Schedule
+      .actions 
+        a(href="/schedule/edit") Add a shift
 
     h3 Current Week
     table 
@@ -51,3 +53,7 @@ block main
           th Afternoon
           each day in nextWeek.days 
             td #{day.shifts.Afternoon}
+
+block headerLinks
+  .actions 
+    a(href="/home") Go back

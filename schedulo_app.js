@@ -17,7 +17,7 @@ app.set("view engine", "pug");
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
-app.use(morgan("common"));12
+app.use(morgan("common"));
 
 app.use(session({
   cookie: {
@@ -56,14 +56,16 @@ app.get("/", (req, res) => {
 });
 
 app.get("/home", (req, res) => {
-  res.render("schedulo-main");
+  res.render("home");
 })
 
+//list of all employees
 app.get("/employees", (req, res) => {
   let schedule = req.session.schedule;
+  let employeeList = schedule.getAllEmployees()
 
   res.render("employees", {
-    employees: schedule.getAllEmployees(),
+    employees: employeeList,
   });
 });
 
@@ -71,6 +73,7 @@ app.get("/employees/new", (req, res) => {
   res.render("new-employee");
 });
 
+//view the schedule page
 app.get("/schedule", (req, res) => {
   let schedule = req.session.schedule;
   let allShifts = schedule.getAllShifts();
@@ -81,9 +84,20 @@ app.get("/schedule", (req, res) => {
   });
 })
 
+app.get("/schedule/edit", (req, res) => {
+  let schedule = req.session.schedule;
+  let allShifts = schedule.getAllShifts();
+
+  res.render("schedule-edit", {
+    currentWeek: allShifts[0],
+    nextWeek: allShifts[1]
+  })
+})
+
+//add a new employee
 app.post("/employees", 
   [
-    body("name")
+    body("employeeName")
       .trim()
       .isLength({ min: 1 })
       .withMessage("Name is required.")
@@ -95,20 +109,22 @@ app.post("/employees",
   ],
   (req, res, next) => {
     let errors = validationResult(req);
+
     if(!errors.isEmpty()) {
       errors.array().map(error => req.flash("error", error.msg));
 
       res.render("new-employee", {
         flash: req.flash(),
-        employeeName: req.body.name,
+        employeeName: req.body.employeeName,
       })
     } else {
       next();
     }
   },
   (req, res) => {
-    req.session.schedule.addEmployee(req.body.name);
-    res.flash("success", "New employee added.");
+    let schedule = req.session.schedule;
+    schedule.addEmployee(req.body.employeeName);
+    req.flash("success", "New employee added.");
     res.redirect("/employees")
   }
 );
