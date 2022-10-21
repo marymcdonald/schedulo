@@ -76,7 +76,10 @@ app.get("/employees/new", (req, res) => {
 //view the schedule page
 app.get("/schedule", (req, res) => {
   let schedule = req.session.schedule;
+  console.log(schedule);
   let allShifts = schedule.getAllShifts();
+
+  console.log(allShifts[0].days[0]);
 
   res.render("schedule", {
     currentWeek: allShifts[0],
@@ -87,12 +90,31 @@ app.get("/schedule", (req, res) => {
 app.get("/schedule/edit", (req, res) => {
   let schedule = req.session.schedule;
   let allShifts = schedule.getAllShifts();
+  let employeeList = schedule.getAllEmployees();
 
   res.render("schedule-edit", {
+    allShifts: allShifts,
     currentWeek: allShifts[0],
-    nextWeek: allShifts[1]
+    nextWeek: allShifts[1],
+    employeeList: employeeList
   })
 })
+
+//add an employee to a shift
+app.post("/schedule", (req, res) => {
+  let schedule = req.session.schedule;
+  let employeeId = req.body.employeeId;
+  let weekId = req.body.weekId;
+  let dayId = req.body.dayId;
+  let shiftTime = req.body.shiftTime;
+  
+  console.log(schedule);
+  console.log(req.body);
+  schedule.addEmployeeToShift(employeeId, weekId, dayId, shiftTime);
+
+  req.flash("success", `${employeeId} added to ${weekId} shift: ${dayId}`);
+  res.redirect("/schedule")
+});
 
 //add a new employee
 app.post("/employees", 

@@ -4,3 +4,46 @@ block main
   section#scheduleEdit 
     header
       h2 Time to fill some shifts!!
+
+    form(action="/schedule" method="post")
+      dl 
+        dt
+          label(for="employee") Select an employee: 
+        dd
+          select(name="employeeId"
+                 id="employeeId")
+            each employee in employeeList
+              option(value=employee.id) #{employee.name}
+
+        dt 
+          label(for="week") Select a week: 
+        dd 
+          select(name="weekId"
+                 id="weekId")
+            option(value=currentWeek.id) Current Week 
+            option(value=nextWeek.id) Next Week
+
+        dt 
+          label(for="day") Select a day: 
+        dd 
+          select(name="dayId"
+                 id="dayId")
+            each day in currentWeek.days
+              option(value=day.id) #{day.name}
+
+        dt 
+          label(for="shiftTime") Select a shift: 
+        dd 
+          select(name="shiftTime"
+                 id="shiftTime")
+            option(value="Morning") Morning 
+            option(value="midMorning") Mid-morning 
+            option(value="Afternoon") Afternoon
+
+      fieldset.actions
+        input(type="submit" value="Save")
+        a(href=`/schedule}`) Cancel
+
+block headerLinks
+  .actions 
+    a(href="/home") Go back
