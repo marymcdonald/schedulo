@@ -103,10 +103,8 @@ app.get("/schedule/edit", (req, res) => {
 //add an employee to a shift
 app.post("/schedule", (req, res) => {
   let schedule = req.session.schedule;
-  let employeeId = req.body.employeeId;
-  let weekId = req.body.weekId;
-  let dayId = req.body.dayId;
-  let shiftTime = req.body.shiftTime;
+  let {employeeId, weekId, dayId, shiftTime} = req.body;
+
   
   console.log(schedule);
   console.log(req.body);
@@ -115,6 +113,50 @@ app.post("/schedule", (req, res) => {
   req.flash("success", `${employeeId} added to ${weekId} shift: ${dayId}`);
   res.redirect("/schedule")
 });
+
+//show all shifts for an employee
+ app.get("/schedule/:employeeId/shifts", (req, res) => {
+  let employeeId = req.params.employeeId;
+  let schedule = req.session.schedule;
+  let allShifts = schedule.getAllShifts();
+
+
+  res.render("shifts", {
+    employeeName: schedule.getEmployeeName(+employeeId),
+    employeeId: employeeId,
+    currentWeek: allShifts[0],
+    nextWeek: allShifts[1],
+  })
+ });
+
+ //remove employee from a shift
+ app.post("/schedule/:employeeId/shifts", (req, res) => {
+  let employeeId = req.params;
+  let {weekId, dayId, shiftTime} = req.body;
+  let schedule = req.session.schedule;
+  let allShifts = schedule.getAllShifts();
+
+  schedule.removeEmployeeFromShift(employeeId, weekId, dayId, shiftTime);
+
+  res.render("shifts", {
+    employeeName: schedule.getEmployeeName(+employeeId),
+    employeeId: employeeId,
+    currentWeek: allShifts[0],
+    nextWeek: allShifts[1],
+  })
+ });
+
+//delete an employee from the list
+app.post("/employees/:employeeId/delete", (req, res) => {
+  let employeeId = req.params.employeeId;
+  let schedule = req.session.schedule;
+
+  schedule.removeEmployee(+employeeId);
+
+  req.flash("success", "Employee removed.");
+  res.redirect("/employees");
+
+})
 
 //add a new employee
 app.post("/employees", 
@@ -150,6 +192,7 @@ app.post("/employees",
     res.redirect("/employees")
   }
 );
+
 
 //Error handler
 app.use((err, req, res, _next) => {

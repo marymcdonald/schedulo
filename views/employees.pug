@@ -17,7 +17,8 @@ block main
           tr 
             th Id 
             th Name 
-            th No scheduling 
+            th No scheduling
+            th Shifts 
             th Edit 
             th Delete
         tbody 
@@ -26,6 +27,8 @@ block main
               td= employee.id
               td= employee.name 
               td= employee.noScheduling ? 'None' : employee.noScheduling
+              td
+                a(href=`/schedule/${employee.id}/shifts`) See shifts
               td
                 form(action=`/employees/${employee.id}/edit` method="get")
                   button.edit(type="submit") Edit
