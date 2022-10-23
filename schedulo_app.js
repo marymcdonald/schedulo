@@ -76,10 +76,7 @@ app.get("/employees/new", (req, res) => {
 //view the schedule page
 app.get("/schedule", (req, res) => {
   let schedule = req.session.schedule;
-  console.log(schedule);
   let allShifts = schedule.getAllShifts();
-
-  console.log(allShifts[0].days[0]);
 
   res.render("schedule", {
     currentWeek: allShifts[0],
@@ -120,6 +117,10 @@ app.post("/schedule", (req, res) => {
   let schedule = req.session.schedule;
   let allShifts = schedule.getAllShifts();
 
+  let shifts = allShifts[0].getEmployeeShifts(employeeId);
+
+  console.log('shifts');
+  console.log(shifts);
 
   res.render("shifts", {
     employeeName: schedule.getEmployeeName(+employeeId),
